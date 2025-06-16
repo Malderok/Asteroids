@@ -4,37 +4,47 @@ from constants import *
 from player import Player
 from asteroid import Asteroid
 from asteroidsfield import AsteroidField
+from shot import Shot
 
 def main():
-
-	negro = pygame.Color(0,0,0)
+	pygame.init()
+	screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
+	reloj = pygame.time.Clock()
 
 	updatable = pygame.sprite.Group()
 	drawable = pygame.sprite.Group()
 	asteroids = pygame.sprite.Group()
+	shots = pygame.sprite.Group()
 	
 	Player.containers = (updatable, drawable)
 	Asteroid.containers = (asteroids, updatable, drawable)
 	AsteroidField.containers = (updatable)
+	Shot.containers = (shots, updatable, drawable)
 
-
-	pygame.init()
-	reloj = pygame.time.Clock()
+	nave = Player(SCREEN_WIDTH / 2 , SCREEN_HEIGHT / 2)
+	
 	dt = 0.0
-	#Ya no hace falta nave = Player(SCREEN_WIDTH / 2 , SCREEN_HEIGHT / 2)
+
 	#Linea innecesaria nave.containers = (updatable, drawable)
 	
 	fieldOfAsteroids = AsteroidField()
 
-	screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
+
 	while True:
 		for event in pygame.event.get():
 			if event.type == pygame.QUIT:
 				return
-		screen.fill(negro)
+			
+		updatable.update(dt)
 
-		for object in updatable:
-			object.update(dt)
+
+
+		for rock in asteroids:
+			if rock.collision_check(nave):
+				print("Game Over!")
+				return
+
+		screen.fill("black")
 
 		for object in drawable:
 			object.draw(screen)

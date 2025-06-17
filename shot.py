@@ -18,3 +18,4 @@ class Shot(CircleShape):
     def update(self, dt):
         # overrrided
         self.position += self.velocity * dt
+

@@ -39,10 +39,16 @@ def main():
 
 
 
-		for rock in asteroids:
-			if rock.collision_check(nave):
+		for asteroid in asteroids:
+			for shot in shots:
+				if shot.collision_check(asteroid):
+					asteroid.split()
+					shot.kill()
+			
+			if asteroid.collision_check(nave):
 				print("Game Over!")
 				return
+			 
 
 		screen.fill("black")
 
